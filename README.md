@@ -34,51 +34,51 @@ Disco Chat is a real-time web application built using Django and Channels, which
 ### Installation Steps
 1. **Clone the Repository**
 
-    ```bash
+    
     git clone https://github.com/vinaygopalp/disco-chat-webapp.git
     cd disco-chat-webapp
-    ```
+   
 
 2. **Create a Virtual Environment**
 
-    ```bash
+     bash
     python -m venv env
     source env/bin/activate  # On Windows use `env\Scripts\activate`
-    ```
+     
 
 3. **Install Dependencies**
 
-    ```bash
+     bash
     pip install -r requirements.txt
-    ```
+     
 
 4. **Set Environment Variables**
 
     Create a `.env` file in the root of your project and add the following:
 
-    ```env
+     env
     ENCRYPTION_KEY=X2P3kMgHLqCI83OLFrMHGfSGWovxON5lUUn8K8ERsQ4=
-    ```
+     
 
     Ensure the key is a valid 32-byte base64-encoded string.
 
 5. **Run Migrations**
 
-    ```bash
+     bash
     python manage.py migrate
-    ```
+     
 
 6. **Create a Superuser**
 
-    ```bash
+     bash
     python manage.py createsuperuser
-    ```
+     
 
 7. **Run the Development Server**
 
-    ```bash
+     bash
     python manage.py runserver
-    ```
+     
 
 8. **Access the Application**
 
