@@ -54,12 +54,6 @@ Disco Chat is a real-time web application built using Django and Channels, which
 
 4. **Set Environment Variables**
 
-    Create a `.env` file in the root of your project and add the following:
-
-     env
-    ENCRYPTION_KEY=X2P3kMgHLqCI83OLFrMHGfSGWovxON5lUUn8K8ERsQ4=
-     
-
     Ensure the key is a valid 32-byte base64-encoded string.
 
 5. **Run Migrations**
