@@ -1,7 +1,3 @@
-Here's a README file for your GitHub repository:
-
----
-
 # Disco Chat WebApp
 
 ## Overview
