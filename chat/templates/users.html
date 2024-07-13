@@ -1,0 +1,267 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DISCO</title>
+    <link rel="stylesheet" href="{% static 'css/styles2.css' %}">
+    </head>
+     </head>
+<body>
+    {% for message in messages %}
+    {%if info1  in message.tags%}
+    {{message}}
+    <div class="loading-screen" id="loading-screen">
+        <h1>Opening DISCOAPP</h1>
+    </div>
+    {% endif %}
+    {%endfor%}
+
+  
+    <div class="app-container" id="app-container">
+        {% for message in messages %}
+        {%if info3  in message.tags%}
+        <div class="alert alert-success" role="alert">
+            <h3 style="text-align:center;">{{message}}</h3>
+          </div>   
+          {%else%}
+          <div class="alert alert-danger" role="alert">
+            <h3 style="text-align:center;">{{message}}</h3>
+          </div>
+            {%endif%}
+            {%endfor%}
+        <div class="sidebar">
+            <div class="profile-section">
+                <div class="profile-info">
+                    <img src="https://xsgames.co/randomusers/assets/images/favicon.png" alt="Profile Picture" class="profile-pic">
+                    <div class="profile-name">{{user.username}}</div>
+                </div>
+                <div class="profile-actions">
+                    <div class="dropdown">
+                        <div class="dropdown-toggle">&#8942;</div>
+                        <div class="dropdown-content">
+                            <a href="#" id="profile-button">Profile</a>
+                            <a href="#" id="dark-mode-toggle">Dark Mode</a>
+                            <a href="/logout" id="logout-button">Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+                
+            <div class="search-bar">
+                <input type="text" placeholder="Search chat rooms..." id="search-input">
+            </div>
+            
+                
+                <ul class="chat-room-list" id="chat-room-list">
+                   
+                    {% for code in request.session.chat_room_codes %}
+                    <li>
+                        <a href="/chat/{{code.code}}" style="text-decoration:none; color:black;"><h2>{{ code.code }}<h2></a></li>
+                    {% endfor %}
+                    <br>
+                    <a href="/chats/login/create-chat-room/" class="add-chat-room" id="add-chat-room">RoomCreate </a>
+                </ul>
+                 
+
+        </div>
+        <div class="main-content">
+            <div class="chat-header">
+                <span id="chat-room-name">{{room_name}}</span>
+                <div class="chat-options">
+                      <button id="myBtn">Add Member</button>
+
+                    <a class="chatt" href="/chats/{{room_name}}/delete" id="chat_leave">Leave</a>
+                    
+                   
+                </div>
+            </div>
+            
+         
+
+               <div class="container chat-messages" id="chat-messages">
+                <div class="container">
+                    {% for date, chats in grouped_chats.items %}
+                    <div class="date-container" style="  text-align: center; margin-top: 20px;margin-bottom: 10px;">
+                        <div class="date-header" style="  font-weight: bold;background-color: #9ae5d5;display:inline-block; padding: 5px 10px; border-radius: 5px; ">
+                            
+                            {{ date }}
+                        </div>
+                    </div>
+                        {% for chat in chats %}
+                            <div class="message {% if chat.sender == user.username %}sent{% else %}received{% endif %}">
+                                <div class="message-content">
+                                    <span class="message-time">{{ chat.sender }}<br></span>
+                                    {{ chat.message }}
+                                    <span class="message-time">{{ chat.time }}</span>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+            </div>
+         
+                {{ room_name|json_script:"room-name" }}
+
+
+
+
+              
+            <div class="chat-input">
+            
+                <input type="text" placeholder="Type a message..." id="chat-message-input">
+                <button id="chat-message-submit">Send</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modals -->
+
+ 
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <form action="/chats/addmember" method="POST">
+          {% csrf_token %}
+          <div class="mb-3">
+              <label for="code" class="form-label">Enter Chatroom Code</label>
+              <input type="text" name="code" placeholder="Enter Chatroom Code" id="member-name" class="form-control">
+          </div>
+          <button type="submit" id="add-member-submit" class="btn btn-primary">Add Member</button>
+      </form>
+    </div>
+  
+  </div>
+
+
+    
+   
+    <script src="{% static 'js/app.js' %}"></script>
+      
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+<script>
+    // Get the modal
+    var modal = document.getElementById("myModal");
+    var btn = document.getElementById("myBtn");
+    var span = document.getElementsByClassName("close")[0];
+
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
+
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const chatLog = document.getElementById('chat-messages');
+        const currentUsername = "{{ user.username }}";
+        const key = CryptoJS.enc.Base64.parse('X2P3kMgHLqCI83OLFrMHGfSGWovxON5lUUn8K8ERsQ4=');
+
+        function encryptMessage(message) {
+            return CryptoJS.AES.encrypt(message, key, { mode: CryptoJS.mode.ECB }).toString();
+        }
+
+        function decryptMessage(encryptedMessage) {
+            const bytes = CryptoJS.AES.decrypt(encryptedMessage, key, { mode: CryptoJS.mode.ECB });
+            return bytes.toString(CryptoJS.enc.Utf8);
+        }
+
+        if (chatLog) {
+            const roomName = JSON.parse(document.getElementById('room-name').textContent);
+            const chatSocket = new WebSocket(
+                'ws://'
+                + window.location.host
+                + '/ws/chat/'
+                + roomName
+                + '/'
+            );
+
+            chatSocket.onmessage = function(e) {
+                const data = JSON.parse(e.data);
+                const messageDiv = document.createElement('div');
+                const isSent = data.sender === currentUsername;
+                messageDiv.classList.add('message', isSent ? 'sent' : 'received');
+
+                console.log("Sender:", data.sender);
+                console.log("Current User:", currentUsername);
+                console.log("Encrypted Message:", data.message);
+
+                const decryptedMessage = decryptMessage(data.message);
+
+                console.log("Decrypted Message:", decryptedMessage);
+
+                messageDiv.id = 'message';
+                messageDiv.innerHTML = `
+                    <div class="message-content">
+                        <span class="message-time">${data.sender}<br></span>
+                        ${decryptedMessage}
+                        <span class="message-time">${new Date().toLocaleTimeString()}</span>
+                    </div>`;
+                chatLog.appendChild(messageDiv);
+                chatLog.scrollTop = chatLog.scrollHeight;
+            };
+
+            chatSocket.onclose = function(e) {
+                console.error('Chat socket closed unexpectedly');
+            };
+
+            document.querySelector('#chat-message-input').focus();
+            document.querySelector('#chat-message-input').onkeyup = function(e) {
+                if (e.keyCode === 13) {  // enter, return
+                    document.querySelector('#chat-message-submit').click();
+                }
+            };
+
+            document.querySelector('#chat-message-submit').onclick = function(e) {
+                const messageInputDom = document.querySelector('#chat-message-input');
+                const message = messageInputDom.value;
+                const encryptedMessage = encryptMessage(message);
+                chatSocket.send(JSON.stringify({
+                    'message': encryptedMessage,
+                    'sender': currentUsername // Send the actual username
+                }));
+                messageInputDom.value = '';
+            };
+        } else {
+            console.error('Element with ID "chat-messages" not found.');
+        }
+    });
+
+    chatSocket.onclose = function(e) {
+        console.error('Chat socket closed unexpectedly');
+    };
+
+    document.querySelector('#chat-message-input').focus();
+    document.querySelector('#chat-message-input').onkeyup = function(e) {
+        if (e.keyCode === 13) {  // enter, return
+            document.querySelector('#chat-message-submit').click();
+        }
+    };
+
+    document.querySelector('#chat-message-submit').onclick = function(e) {
+        const messageInputDom = document.querySelector('#chat-message-input');
+        const message = messageInputDom.value;
+        const encryptedMessage = encryptMessage(message);
+        chatSocket.send(JSON.stringify({
+            'message': encryptedMessage,
+            'sender': 'me' 
+        }));
+        messageInputDom.value = '';
+    };
+</script>
+</body>
+</html>
+ 
