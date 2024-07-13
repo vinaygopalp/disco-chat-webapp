@@ -51,8 +51,7 @@ def register(request):
         email = request.POST['email']
         user_name = request.POST['username']
         password1=request.POST['password1']
-        ob=User.objects.get(username=user_name)
-        if ob:
+        if User.objects.filter(username=user_name).exists():
             messages.info(request,"Username already taken")
             not_matching="not_matching"
         elif password == password1:   

@@ -94,7 +94,6 @@ CHANNEL_LAYERS = {
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'testt',
@@ -102,6 +101,14 @@ DATABASES = {
         'PASSWORD':'vinay@2003',
         'HOST':'localhost'
     }
+
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.postgresql',
+    #     'NAME': 'postgres',
+    #     'USER': 'postgres.hbgizpqjebvdaiftfgxg',
+    #     'PASSWORD':'vinay@suhani',
+    #     'HOST':'aws-0-ap-south-1.pooler.supabase.com'
+    # }
 }
 
 
