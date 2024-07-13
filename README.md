@@ -116,9 +116,7 @@ Uses Django Channels for real-time communication between clients and the server.
 3. Commit and push your changes.
 4. Create a pull request to the main branch.
 
-## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ## Acknowledgments
 
