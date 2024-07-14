@@ -4,7 +4,8 @@ from .models import ChatRoom
 from django.http.response import HttpResponseRedirect
 from django.contrib.auth.models import User,auth
 # Create your views here.
- 
+import random
+import string
 
 @login_required
 def finding_all_chatrooms(request):
@@ -16,13 +17,24 @@ def finding_all_chatrooms(request):
     # Store chat room codes in session to use in the redirected view
     request.session['chat_room_codes'] = chat_room_codes_list
 
+def generate_unique_key():
+    # Generate a random 6-character alphanumeric key (uppercase letters + digits)
+    return ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+
+def unique():
+    code=generate_unique_key()
+    obj=ChatRoom.objects.filter(code=code)
+    if obj.exists():
+        return unique()
+    else:    
+        return code
 
 @login_required
 def create_chat_room(request):
-        
+        code=unique()
         user = request.user.username
         print(user)
-        chat_room = ChatRoom.objects.create(name=user)
+        chat_room = ChatRoom.objects.create(name=user,code=code)
         chat_room.save()
         finding_all_chatrooms(request)
         return HttpResponseRedirect(f'/{request.user.username}/login')
