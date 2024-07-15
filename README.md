@@ -1,6 +1,6 @@
 # Disco Chat WebApp  
 ## Project link
-<a href="tps://vinaygopaldisco.tech">wwww.vinaygopaldisco.tech</a>
+<a href="https://vinaygopaldisco.tech">www.vinaygopaldisco.tech</a>
 
 ## Overview
 
