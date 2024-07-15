@@ -23,16 +23,28 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-!6@yf78)z2)p2c#cte#$&!$x=rci@^94#ue!=#5yj9z(-rj0e9'
 
 
-from dotenv import load_dotenv
-
-load_dotenv()  # This loads environment variables from the .env file
+  # This loads environment variables from the .env file
 
 ENCRYPTION_KEY = os.getenv('ENCRYPTION_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['disco-chat-app.onrender.com','vinaygopaldisco.tech','localhost', '127.0.0.1']
 # ALLOWED_HOSTS = ['localhost', '127.0.0.1', ]
+# CSRF_TRUSTED_ORIGINS = ['https://disco-chat-app.onrender.com','https://vinaygopaldisco.tech']
+CSRF_TRUSTED_ORIGINS = [
+    'https://vinaygopaldisco.tech',
+    'http://localhost',
+    'http://127.0.0.1',
+    'https://disco-chat-app.onrender.com'
+]
+# CSRF_COOKIE_SECURE = True
+# SESSION_COOKIE_SECURE = True
 
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 
 # Application definition
 INSTALLED_APPS = [
@@ -85,7 +97,12 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [("127.0.0.1", 6379)],
+"hosts": ["redis://red-cqa0hblds78s739kgu5g:6379/0"],
+
+            #  "hosts": ["rediss://red-cqa0hblds78s739kgu5g:NFw0ey2xQ9blDqjWL08Mi1zaJN3Pwcfi@singapore-redis.render.com:6379"],
+            # "password": "NFw0ey2xQ9blDqjWL08Mi1zaJN3Pwcfi",
+            # "hosts": [("127.0.0.1", 6379)],rediss://red-cqa0hblds78s739kgu5g:NFw0ey2xQ9blDqjWL08Mi1zaJN3Pwcfi@singapore-redis.render.com:6379
+            # rediss://red-cqa0hblds78s739kgu5g:NFw0ey2xQ9blDqjWL08Mi1zaJN3Pwcfi@singapore-redis.render.com:6379
         },
     },
 }
@@ -94,21 +111,21 @@ CHANNEL_LAYERS = {
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'testt',
-        'USER': 'postgres',
-        'PASSWORD':'vinay@2003',
-        'HOST':'localhost'
-    }
-
     # 'default': {
     #     'ENGINE': 'django.db.backends.postgresql',
-    #     'NAME': 'postgres',
-    #     'USER': 'postgres.hbgizpqjebvdaiftfgxg',
-    #     'PASSWORD':'vinay@suhani',
-    #     'HOST':'aws-0-ap-south-1.pooler.supabase.com'
+    #     'NAME': "testt",
+    #     'USER': 'postgres',
+    #     'PASSWORD':'vinay@2003',
+    #     'HOST':'localhost'
     # }
+
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',
+        'USER': 'postgres.xchuatodtyxweydcvfwk',
+        'PASSWORD':'Vinaygopal@2003',
+        'HOST':'aws-0-ap-southeast-1.pooler.supabase.com'
+    }
 }
 
 

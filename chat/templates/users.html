@@ -71,7 +71,7 @@
             <div class="chat-header">
                 <span id="chat-room-name">{{room_name}}</span>
                 <div class="chat-options">
-                      <button id="myBtn">Add Member</button>
+                      <button id="myBtn">Join Chatroom</button>
 
                     <a class="chatt" href="/chats/{{room_name}}/delete" id="chat_leave">Leave</a>
                     
@@ -145,7 +145,7 @@
     <script src="{% static 'js/app.js' %}"></script>
       
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
-<script>
+{% comment %} <script>
     // Get the modal
     var modal = document.getElementById("myModal");
     var btn = document.getElementById("myBtn");
@@ -261,6 +261,102 @@
         }));
         messageInputDom.value = '';
     };
+</script> {% endcomment %}
+<script>
+    // Get the modal
+    var modal = document.getElementById("myModal");
+    var btn = document.getElementById("myBtn");
+    var span = document.getElementsByClassName("close")[0];
+
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
+
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const chatLog = document.getElementById('chat-messages');
+        const currentUsername = "{{ user.username }}";
+        const key = CryptoJS.enc.Base64.parse('X2P3kMgHLqCI83OLFrMHGfSGWovxON5lUUn8K8ERsQ4=');
+
+        function encryptMessage(message) {
+            return CryptoJS.AES.encrypt(message, key, { mode: CryptoJS.mode.ECB }).toString();
+        }
+
+        function decryptMessage(encryptedMessage) {
+            const bytes = CryptoJS.AES.decrypt(encryptedMessage, key, { mode: CryptoJS.mode.ECB });
+            return bytes.toString(CryptoJS.enc.Utf8);
+        }
+
+        if (chatLog) {
+            const roomName = JSON.parse(document.getElementById('room-name').textContent);
+            const protocol = window.location.protocol === "https:" ? "wss" : "ws";
+            const chatSocket = new WebSocket(
+                protocol + '://'
+                + window.location.host
+                + '/ws/chat/'
+                + roomName
+                + '/'
+            );
+
+            chatSocket.onmessage = function(e) {
+                const data = JSON.parse(e.data);
+                const messageDiv = document.createElement('div');
+                const isSent = data.sender === currentUsername;
+                messageDiv.classList.add('message', isSent ? 'sent' : 'received');
+
+                console.log("Sender:", data.sender);
+                console.log("Current User:", currentUsername);
+                console.log("Encrypted Message:", data.message);
+
+                const decryptedMessage = decryptMessage(data.message);
+
+                console.log("Decrypted Message:", decryptedMessage);
+
+                messageDiv.id = 'message';
+                messageDiv.innerHTML = `
+                    <div class="message-content">
+                        <span class="message-time">${data.sender}<br></span>
+                        ${decryptedMessage}
+                        <span class="message-time">${new Date().toLocaleTimeString()}</span>
+                    </div>`;
+                chatLog.appendChild(messageDiv);
+                chatLog.scrollTop = chatLog.scrollHeight;
+            };
+
+            chatSocket.onclose = function(e) {
+                console.error('Chat socket closed unexpectedly');
+            };
+
+            document.querySelector('#chat-message-input').focus();
+            document.querySelector('#chat-message-input').onkeyup = function(e) {
+                if (e.keyCode === 13) {  // enter, return
+                    document.querySelector('#chat-message-submit').click();
+                }
+            };
+
+            document.querySelector('#chat-message-submit').onclick = function(e) {
+                const messageInputDom = document.querySelector('#chat-message-input');
+                const message = messageInputDom.value;
+                const encryptedMessage = encryptMessage(message);
+                chatSocket.send(JSON.stringify({
+                    'message': encryptedMessage,
+                    'sender': currentUsername // Send the actual username
+                }));
+                messageInputDom.value = '';
+            };
+        } else {
+            console.error('Element with ID "chat-messages" not found.');
+        }
+    });
 </script>
 </body>
 </html>
