@@ -1,6 +1,7 @@
-# Disco Chat WebApp
-## Project Link
-<a href="www.vinaygopaldisc.tech">vinaygopaldisco.tech </a>
+# Disco Chat WebApp  
+## Project Demo
+<a href="https://vinaygopaldisco.tech">www.vinaygopaldisco.tech</a>
+
 ## Overview
 
 Disco Chat is a real-time web application built using Django and Channels, which supports encrypted messaging using AES encryption. Users can join chat rooms and send messages securely.
