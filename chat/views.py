@@ -48,13 +48,11 @@ def room_delete(request,room_name):
 
 def addmember(request):
     if request.method == 'POST':
-        print("Dsfvjdknvfnjvfjkdngjkfdnjkdngjkdnjkdnfkjbnnjkbnfjkjnbfjkdnbjkfnjknjknknkjdsfsf")
         user = request.user.username
         code=request.POST['code']
         print(user)
         try:
             obj = ChatRoom.objects.get(code=code, name=user)
-            print("yes")
             return HttpResponseRedirect(f'/chat/{code}')
         except ChatRoom.DoesNotExist:
             chat_room = ChatRoom.objects.create(name=user, code=code)

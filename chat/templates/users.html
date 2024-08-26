@@ -267,7 +267,7 @@
     var modal = document.getElementById("myModal");
     var btn = document.getElementById("myBtn");
     var span = document.getElementsByClassName("close")[0];
-
+ 
     btn.onclick = function() {
         modal.style.display = "block";
     }
@@ -283,8 +283,9 @@
     }
 
     document.addEventListener('DOMContentLoaded', (event) => {
-        const chatLog = document.getElementById('chat-messages');
+          const chatLog = document.getElementById('chat-messages');
         const currentUsername = "{{ user.username }}";
+        {% comment %}
         const key = CryptoJS.enc.Base64.parse('X2P3kMgHLqCI83OLFrMHGfSGWovxON5lUUn8K8ERsQ4=');
 
         function encryptMessage(message) {
@@ -294,7 +295,70 @@
         function decryptMessage(encryptedMessage) {
             const bytes = CryptoJS.AES.decrypt(encryptedMessage, key, { mode: CryptoJS.mode.ECB });
             return bytes.toString(CryptoJS.enc.Utf8);
+        } {% endcomment %}
+
+
+        function encryptMessage(message, key) {
+            // Generate a random 16-byte Initialization Vector (IV)
+            var iv = CryptoJS.lib.WordArray.random(16);
+        
+            // Convert the key to a WordArray
+            var keyWordArray = CryptoJS.enc.Utf8.parse(key);
+        
+            // Encrypt the message
+            var encrypted = CryptoJS.AES.encrypt(message, keyWordArray, {
+                iv: iv,
+                mode: CryptoJS.mode.CBC,
+                padding: CryptoJS.pad.Pkcs7
+            });
+        
+            // Return the encrypted message as a combination of IV and ciphertext
+            return iv.toString(CryptoJS.enc.Hex) + encrypted.ciphertext.toString(CryptoJS.enc.Hex);
         }
+        
+        // Decrypt a message using AES-CBC
+        function encryptMessage(message, key) {
+            // Generate a random 16-byte Initialization Vector (IV)
+            var iv = CryptoJS.lib.WordArray.random(16);
+        
+            // Convert the key to a WordArray
+            var keyWordArray = CryptoJS.enc.Utf8.parse(key);
+        
+            // Encrypt the message using AES-CBC
+            var encrypted = CryptoJS.AES.encrypt(message, keyWordArray, {
+                iv: iv,
+                mode: CryptoJS.mode.CBC,
+                padding: CryptoJS.pad.Pkcs7
+            });
+        
+            // Return the encrypted message as a combination of IV and ciphertext (both in hexadecimal)
+            return iv.toString(CryptoJS.enc.Hex) + encrypted.ciphertext.toString(CryptoJS.enc.Hex);
+        }
+        
+        function decryptMessage(encryptedMessage, key) {
+            // Extract the IV from the encrypted message (first 32 hex characters)
+            var iv = CryptoJS.enc.Hex.parse(encryptedMessage.substring(0, 32));
+        
+            // Extract the ciphertext from the encrypted message (remaining characters)
+            var ciphertext = CryptoJS.enc.Hex.parse(encryptedMessage.substring(32));
+        
+            // Convert the key to a WordArray
+            var keyWordArray = CryptoJS.enc.Utf8.parse(key);
+        
+            // Decrypt the message using AES-CBC
+            var decrypted = CryptoJS.AES.decrypt({
+                ciphertext: ciphertext
+            }, keyWordArray, {
+                iv: iv,
+                mode: CryptoJS.mode.CBC,
+                padding: CryptoJS.pad.Pkcs7
+            });
+        
+            // Return the decrypted message as a UTF-8 string
+            return decrypted.toString(CryptoJS.enc.Utf8);
+        }
+        
+        var key = "8809a0e4ccd1cf0dfcbbc4de3ca6f9b4";
 
         if (chatLog) {
             const roomName = JSON.parse(document.getElementById('room-name').textContent);
@@ -317,7 +381,7 @@
                 console.log("Current User:", currentUsername);
                 console.log("Encrypted Message:", data.message);
 
-                const decryptedMessage = decryptMessage(data.message);
+                const decryptedMessage = decryptMessage(data.message,key);
 
                 console.log("Decrypted Message:", decryptedMessage);
 
@@ -346,7 +410,7 @@
             document.querySelector('#chat-message-submit').onclick = function(e) {
                 const messageInputDom = document.querySelector('#chat-message-input');
                 const message = messageInputDom.value;
-                const encryptedMessage = encryptMessage(message);
+                const encryptedMessage = encryptMessage(message,key);
                 chatSocket.send(JSON.stringify({
                     'message': encryptedMessage,
                     'sender': currentUsername // Send the actual username
