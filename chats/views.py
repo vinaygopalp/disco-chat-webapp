@@ -10,7 +10,7 @@ from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad, unpad
 from Crypto.Random import get_random_bytes
 import binascii
- 
+  
 key = '8809a0e4ccd1cf0dfcbbc4de3ca6f9b4'
 
 # def decrypt_message_cbc(encrypted_message, key):
@@ -108,17 +108,18 @@ def room(request, room_name):
         current_lst = {
             "sender": str(j.user),
             'message': decrypted_message_str,
+            "dates": j.timestamp.strftime('%Y-%m-%d'),
             "date": j.timestamp.strftime('%d-%m-%Y'),
             "time": j.timestamp.strftime('%H:%M:%S')
         }
         all_chats.append(current_lst)
 
     # Sorting by date and time
-    all_chats_sorted = sorted(all_chats, key=itemgetter('date', 'time'))
+    all_chats_sorted = sorted(all_chats, key=itemgetter('dates', 'time'))
 
     # Grouping by date
     grouped_chats = {}
     for date, items in groupby(all_chats_sorted, key=itemgetter('date')):
         grouped_chats[date] = list(items)
-
+    print(grouped_chats)
     return render(request, "users.html", {"room_name": room_name, "grouped_chats": grouped_chats})
