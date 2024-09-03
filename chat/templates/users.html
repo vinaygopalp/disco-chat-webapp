@@ -71,34 +71,36 @@
 
         </div>
         <div class="main-content">
-            
-            {% if room_name %}
+            {% if ai %}
             <div class="chat-header">
-                <span id="chat-room-name">{{room_name}}</span>
+                <span id="chat-room-name">GenAI</span>
                 <div class="chat-options">
                       <button id="myBtn">Join Chatroom</button>
 
                     <a class="chatt" href="/chats/{{room_name}}/delete" id="chat_leave">Leave</a>
+                    
+                   
                 </div>
-            </div>
+            
             {%else%}
-            {%if  ai%}
+            {% if room_name %}
             <div class="chat-header">
-                <span id="chat-room-name">GenAI</span>
+                <span id="chat-room-name">{{room_name}}</span>
                 <div class="chat-options">
+                    <a class="chatt" href="/chats/{{room_name}}/delete" id="chat_leave">Leave</a>
                 </div>
-            </div>
+           
             {%else%}
             <div class="chat-header">
                 <span id="chat-room-name">Select Chatroom</span>
                 <div class="chat-options">
+                    
                 </div>
-            </div>
-             {%endif%}
+            {%endif%}
+            {%endif%}   
 
-
-
-         {%endif%}
+            
+        </div>
 
                <div class="container chat-messages" id="chat-messages">
                 <div class="container">
@@ -339,8 +341,7 @@
         }
     });
 
-
-
+     
     document.getElementById('chat-message-submit-ai').addEventListener('click', function() {
         const messageInput = document.getElementById('chat-message-input-ai').value;
         

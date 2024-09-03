@@ -84,7 +84,6 @@ def room(request, room_name):
 
     # Sorting by date and time
     all_chats_sorted = sorted(all_chats, key=itemgetter('dates', 'time'))
-
     # Grouping by date
     grouped_chats = {}
     for date, items in groupby(all_chats_sorted, key=itemgetter('date')):

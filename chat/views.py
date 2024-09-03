@@ -16,7 +16,7 @@ def finding_all_chatrooms(request):
     chat_rooms = ChatRoom.objects.filter(name=username)
     chat_room_codes = chat_rooms.values('pk','code')
     chat_room_codes_list = list(chat_room_codes)
-    print(chat_room_codes_list)
+   
     # Store chat room codes in session to use in the redirected view
     request.session['chat_room_codes'] = chat_room_codes_list
 
@@ -53,7 +53,7 @@ def addmember(request):
     if request.method == 'POST':
         user = request.user.username
         code=request.POST['code']
-        print(user)
+       
         try:
             obj = ChatRoom.objects.get(code=code, name=user)
             return HttpResponseRedirect(f'/chat/{code}')
@@ -84,10 +84,10 @@ def ai_chatting(request,username):
         
         message = data.get('message', '')
    
-        genai.configure(api_key='AIzaSyBDpxS9J_L08-rfD4wt5jvddVR5kXPoKTc' )
+        genai.configure(api_key='' )
         model = genai.GenerativeModel("gemini-1.5-flash")
         response = model.generate_content(message)
-        print(response.text)
+       
         # Return the processed data back to the frontend
         response_data = {
             'status': 'success',
