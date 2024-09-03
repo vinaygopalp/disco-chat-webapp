@@ -8,5 +8,6 @@ urlpatterns = [
      path('login/create-chat-room/', views.create_chat_room, name='create_chat_room'),
       path("addmember", views.addmember, name="addmember"),
       path("<str:room_name>/delete", views.room_delete, name="room_delete"),
+       path("<str:username>/AI", views.ai_chatting, name="ai_chatting"),
      ]
 

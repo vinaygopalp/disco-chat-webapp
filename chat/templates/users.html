@@ -61,25 +61,44 @@
                     <li>
                         <a href="/chat/{{code.code}}" style="text-decoration:none; color:black;"><h2>{{ code.code }}<h2></a></li>
                     {% endfor %}
+                    <li>
+                        <a href="/chats/{{user.username}}/AI" style="text-decoration:none; color:black;"><h2 style="color:blue; font-weight:bold">AI<h2></a></li>
                     <br>
+
                     <a href="/chats/login/create-chat-room/" class="add-chat-room" id="add-chat-room">RoomCreate </a>
                 </ul>
                  
 
         </div>
         <div class="main-content">
+            
+            {% if room_name %}
             <div class="chat-header">
                 <span id="chat-room-name">{{room_name}}</span>
                 <div class="chat-options">
                       <button id="myBtn">Join Chatroom</button>
 
                     <a class="chatt" href="/chats/{{room_name}}/delete" id="chat_leave">Leave</a>
-                    
-                   
                 </div>
             </div>
-            
-         
+            {%else%}
+            {%if  ai%}
+            <div class="chat-header">
+                <span id="chat-room-name">GenAI</span>
+                <div class="chat-options">
+                </div>
+            </div>
+            {%else%}
+            <div class="chat-header">
+                <span id="chat-room-name">Select Chatroom</span>
+                <div class="chat-options">
+                </div>
+            </div>
+             {%endif%}
+
+
+
+         {%endif%}
 
                <div class="container chat-messages" id="chat-messages">
                 <div class="container">
@@ -102,18 +121,26 @@
                     {% endfor %}
                 </div>
             </div>
-         
+         {%if ai%}
+
+         <div class="chat-input">
+            
+            <input type="text" placeholder="Type a message..." id="chat-message-input-ai">
+            <button id="chat-message-submit-ai">Send</button>
+        </div>
+
+         {%else%}
                 {{ room_name|json_script:"room-name" }}
+                <div class="chat-input">
+            
+                    <input type="text" placeholder="Type a message..." id="chat-message-input">
+                    <button id="chat-message-submit">Send</button>
+                </div>
 
-
-
+            {%endif%}   
 
               
-            <div class="chat-input">
-            
-                <input type="text" placeholder="Type a message..." id="chat-message-input">
-                <button id="chat-message-submit">Send</button>
-            </div>
+           
         </div>
     </div>
 
@@ -145,124 +172,12 @@
     <script src="{% static 'js/app.js' %}"></script>
       
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
-{% comment %} <script>
-    // Get the modal
-    var modal = document.getElementById("myModal");
-    var btn = document.getElementById("myBtn");
-    var span = document.getElementsByClassName("close")[0];
-
-    btn.onclick = function() {
-        modal.style.display = "block";
-    }
-
-    span.onclick = function() {
-        modal.style.display = "none";
-    }
-
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
-
-    document.addEventListener('DOMContentLoaded', (event) => {
-        const chatLog = document.getElementById('chat-messages');
-        const currentUsername = "{{ user.username }}";
-        const key = CryptoJS.enc.Base64.parse('X2P3kMgHLqCI83OLFrMHGfSGWovxON5lUUn8K8ERsQ4=');
-
-        function encryptMessage(message) {
-            return CryptoJS.AES.encrypt(message, key, { mode: CryptoJS.mode.ECB }).toString();
-        }
-
-        function decryptMessage(encryptedMessage) {
-            const bytes = CryptoJS.AES.decrypt(encryptedMessage, key, { mode: CryptoJS.mode.ECB });
-            return bytes.toString(CryptoJS.enc.Utf8);
-        }
-
-        if (chatLog) {
-            const roomName = JSON.parse(document.getElementById('room-name').textContent);
-            const chatSocket = new WebSocket(
-                'ws://'
-                + window.location.host
-                + '/ws/chat/'
-                + roomName
-                + '/'
-            );
-
-            chatSocket.onmessage = function(e) {
-                const data = JSON.parse(e.data);
-                const messageDiv = document.createElement('div');
-                const isSent = data.sender === currentUsername;
-                messageDiv.classList.add('message', isSent ? 'sent' : 'received');
-
-                console.log("Sender:", data.sender);
-                console.log("Current User:", currentUsername);
-                console.log("Encrypted Message:", data.message);
-
-                const decryptedMessage = decryptMessage(data.message);
-
-                console.log("Decrypted Message:", decryptedMessage);
-
-                messageDiv.id = 'message';
-                messageDiv.innerHTML = `
-                    <div class="message-content">
-                        <span class="message-time">${data.sender}<br></span>
-                        ${decryptedMessage}
-                        <span class="message-time">${new Date().toLocaleTimeString()}</span>
-                    </div>`;
-                chatLog.appendChild(messageDiv);
-                chatLog.scrollTop = chatLog.scrollHeight;
-            };
-
-            chatSocket.onclose = function(e) {
-                console.error('Chat socket closed unexpectedly');
-            };
-
-            document.querySelector('#chat-message-input').focus();
-            document.querySelector('#chat-message-input').onkeyup = function(e) {
-                if (e.keyCode === 13) {  // enter, return
-                    document.querySelector('#chat-message-submit').click();
-                }
-            };
-
-            document.querySelector('#chat-message-submit').onclick = function(e) {
-                const messageInputDom = document.querySelector('#chat-message-input');
-                const message = messageInputDom.value;
-                const encryptedMessage = encryptMessage(message);
-                chatSocket.send(JSON.stringify({
-                    'message': encryptedMessage,
-                    'sender': currentUsername // Send the actual username
-                }));
-                messageInputDom.value = '';
-            };
-        } else {
-            console.error('Element with ID "chat-messages" not found.');
-        }
-    });
-
-    chatSocket.onclose = function(e) {
-        console.error('Chat socket closed unexpectedly');
-    };
-
-    document.querySelector('#chat-message-input').focus();
-    document.querySelector('#chat-message-input').onkeyup = function(e) {
-        if (e.keyCode === 13) {  // enter, return
-            document.querySelector('#chat-message-submit').click();
-        }
-    };
-
-    document.querySelector('#chat-message-submit').onclick = function(e) {
-        const messageInputDom = document.querySelector('#chat-message-input');
-        const message = messageInputDom.value;
-        const encryptedMessage = encryptMessage(message);
-        chatSocket.send(JSON.stringify({
-            'message': encryptedMessage,
-            'sender': 'me' 
-        }));
-        messageInputDom.value = '';
-    };
-</script> {% endcomment %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/aes.min.js"></script>
 <script>
+    document.querySelector('.dropdown-toggle').addEventListener('click', function() {
+        const dropdown = document.querySelector('.dropdown-content');
+        dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+    });
     // Get the modal
     var modal = document.getElementById("myModal");
     var btn = document.getElementById("myBtn");
@@ -286,6 +201,8 @@
           const chatLog = document.getElementById('chat-messages');
         const currentUsername = "{{ user.username }}";
         {% comment %}
+
+
         const key = CryptoJS.enc.Base64.parse('X2P3kMgHLqCI83OLFrMHGfSGWovxON5lUUn8K8ERsQ4=');
 
         function encryptMessage(message) {
@@ -421,6 +338,92 @@
             console.error('Element with ID "chat-messages" not found.');
         }
     });
+
+
+
+    document.getElementById('chat-message-submit-ai').addEventListener('click', function() {
+        const messageInput = document.getElementById('chat-message-input-ai').value;
+        
+        // Make sure the input is not empty
+        if (messageInput.trim() !== "") {
+            const chatLog = document.getElementById('chat-messages');
+            document.getElementById('chat-message-input-ai').value = '';
+            // Display the user's message in the chat
+            const userMessageDiv = document.createElement('div');
+            userMessageDiv.classList.add('message', 'sent');  // Styling as 'sent' message
+            
+            userMessageDiv.innerHTML = `
+                <div class="message-content">
+                    <span class="message-time">You<br></span>
+                    ${escapeHtml(messageInput)}
+                    <span class="message-time">${new Date().toLocaleTimeString()}</span>
+                </div>`;
+            
+            chatLog.appendChild(userMessageDiv);
+    
+            // Send the message to Django backend using fetch
+            fetch('/chats/{{user.username}}/AI', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCSRFToken()  // Pass CSRF token
+                },
+                body: JSON.stringify({
+                    'message': messageInput
+                })
+            })
+            .then(response => response.json())  // Convert the response to JSON
+            .then(data => {
+                if (data.status === 'success') {
+                    // Handle the JSON response from the backend
+                    console.log('Response from backend:', data.response_message);
+        
+                    // Display the AI response in the chat
+                    const messageDiv = document.createElement('div');
+                    messageDiv.classList.add('message', 'received');  // Styling as 'received' message
+        
+                    messageDiv.innerHTML = `
+                        <div class="message-content">
+                            <span class="message-time">AI<br></span>
+                            ${escapeHtml(data.response_message)}
+                            <span class="message-time">${new Date().toLocaleTimeString()}</span>
+                        </div>`;
+                    
+                    chatLog.appendChild(messageDiv);
+                    chatLog.scrollTop = chatLog.scrollHeight;  // Auto-scroll to the latest message
+        
+                    // Clear the input field
+                    document.getElementById('chat-message-input-ai').value = '';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    });
+    
+    // Function to get the CSRF token from Django
+    function getCSRFToken() {
+        let csrfToken = null;
+        const cookies = document.cookie.split(';');
+        for (let cookie of cookies) {
+            const [key, value] = cookie.trim().split('=');
+            if (key === 'csrftoken') {
+                csrfToken = value;
+                break;
+            }
+        }
+        return csrfToken;
+    }
+    
+    // Function to escape HTML
+    function escapeHtml(html) {
+        var text = document.createTextNode(html);
+        var div = document.createElement('div');
+        div.appendChild(text);
+        return div.innerHTML;
+    }
+    
 </script>
 </body>
 </html>

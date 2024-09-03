@@ -313,7 +313,9 @@ body {
     font-size: 28px;
     font-weight: bold;
   }
-  
+  .message-content {
+    white-space: pre-wrap; /* Preserves whitespace and line breaks */
+}
   .close:hover,
   .close:focus {
     color: black;
@@ -425,4 +427,33 @@ a#chat_leave {
 
 a#chat_leave:hover {
     background-color: #f67e02; /* Change background color on hover */
+}
+#chat-messages {
+    max-height: 500px; /* Adjust based on your layout */
+    overflow-y: auto;
+}
+
+/* Styling for individual message blocks */
+.message {
+    width: 80%; /* Adjust to fit your design */
+    max-width: 600px; /* Optional: Set a maximum width */
+    margin: 5px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #f1f1f1;
+}
+
+.message.sent {
+    align-self: flex-end;
+    background-color: #d4edda; /* Greenish background for sent messages */
+}
+
+.message.received {
+    align-self: flex-start;
+    background-color: #f8d7da; /* Reddish background for received messages */
+}
+
+/* Ensure the message content area fits within the message block */
+.message-content {
+    white-space: pre-wrap; /* Preserve whitespace and newlines */
 }

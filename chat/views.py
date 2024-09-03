@@ -6,7 +6,10 @@ from django.contrib.auth.models import User,auth
 # Create your views here.
 import random
 import string
-
+import google.generativeai as genai
+from django.http import JsonResponse
+import json
+ 
 @login_required
 def finding_all_chatrooms(request):
     username=request.user.username
@@ -73,3 +76,24 @@ def all_chatroom(request):
     
     obj=ChatRoom.objects.filter(name=username)
     # return HttpResponseRedirect(f'/{username}/login',{'list_obj':obj})
+@login_required
+def ai_chatting(request,username):
+    ai=True
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        
+        message = data.get('message', '')
+   
+        genai.configure(api_key='AIzaSyBDpxS9J_L08-rfD4wt5jvddVR5kXPoKTc' )
+        model = genai.GenerativeModel("gemini-1.5-flash")
+        response = model.generate_content(message)
+        print(response.text)
+        # Return the processed data back to the frontend
+        response_data = {
+            'status': 'success',
+            'response_message': response.text,
+        }
+        return JsonResponse(response_data)
+        
+
+    return render(request,'users.html',{'ai':ai})

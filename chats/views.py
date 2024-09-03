@@ -10,27 +10,9 @@ from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad, unpad
 from Crypto.Random import get_random_bytes
 import binascii
+from django.http import JsonResponse
   
 key = '8809a0e4ccd1cf0dfcbbc4de3ca6f9b4'
-
-# def decrypt_message_cbc(encrypted_message, key):
-#     # Convert the encrypted message from hex to bytes
-#     encrypted_bytes = binascii.unhexlify(encrypted_message)
-    
-#     # Extract the IV (first 16 bytes) and ciphertext (rest of the bytes)
-#     iv = encrypted_bytes[:16]
-#     ciphertext = encrypted_bytes[16:]
-    
-#     # Create an AES cipher object with the key and extracted IV in CBC mode
-#     cipher = AES.new(key, AES.MODE_CBC, iv)
-    
-#     # Decrypt the ciphertext
-#     decrypted_padded_message = cipher.decrypt(ciphertext)
-    
-#     # Unpad the decrypted message and return it as a UTF-8 string
-#     return unpad(decrypted_padded_message, AES.block_size).decode('utf-8')
-
-
 def decrypt_message_cbc(encrypted_message, key):
     try:
         # Convert the encrypted message from hex to bytes
@@ -88,22 +70,8 @@ def room(request, room_name):
         chatroom_list.append(chatrooms.id)
 
     obj = Message.objects.filter(room_id__in=chatroom_list)
-    for j in obj:
-        # key_base64 = 'X2P3kMgHLqCI83OLFrMHGfSGWovxON5lUUn8K8ERsQ4='
-        # key = base64.b64decode(key_base64)
-        # Encrypted message  
+    for j in obj: 
         encrypted_message = j.content   
-
-        # try:
-        #     encrypted_bytes = base64.b64decode(encrypted_message)
-        #     backend = default_backend()
-        #     cipher = Cipher(algorithms.AES(key), modes.ECB(), backend=backend)
-        #     decryptor = cipher.decryptor()
-        #     decrypted_message = decryptor.update(encrypted_bytes) + decryptor.finalize()
-        #     decrypted_message_str = decrypted_message.decode('utf-8').strip()
-        # except Exception as e:
-        #     print(f"Decryption error: {e}")
-        #     decrypted_message_str = "Decryption failed"
         decrypted_message_str=decrypt_message_cbc(encrypted_message, key)
         current_lst = {
             "sender": str(j.user),
@@ -121,5 +89,41 @@ def room(request, room_name):
     grouped_chats = {}
     for date, items in groupby(all_chats_sorted, key=itemgetter('date')):
         grouped_chats[date] = list(items)
-    print(grouped_chats)
+    
     return render(request, "users.html", {"room_name": room_name, "grouped_chats": grouped_chats})
+
+
+ 
+# def room(request, room_name):
+#     chatroom = ChatRoom.objects.filter(code=room_name)
+#     chatroom_list = []
+#     all_chats = []
+
+#     for chatrooms in chatroom:
+#         chatroom_list.append(chatrooms.id)
+
+#     obj = Message.objects.filter(room_id__in=chatroom_list)
+#     for j in obj: 
+#         encrypted_message = j.content   
+#         decrypted_message_str = decrypt_message_cbc(encrypted_message, key)
+#         current_lst = {
+#             "sender": str(j.user),
+#             'message': decrypted_message_str,
+#             "dates": j.timestamp.strftime('%Y-%m-%d'),
+#             "date": j.timestamp.strftime('%d-%m-%Y'),
+#             "time": j.timestamp.strftime('%H:%M:%S')
+#         }
+#         all_chats.append(current_lst)
+
+#     # Sorting by date and time
+#     all_chats_sorted = sorted(all_chats, key=itemgetter('dates', 'time'))
+
+#     # Grouping by date
+#     grouped_chats = {}
+#     for date, items in groupby(all_chats_sorted, key=itemgetter('date')):
+#         grouped_chats[date] = list(items)
+    
+#     return JsonResponse({
+#         "room_name": room_name,
+#         "grouped_chats": grouped_chats
+#     })
