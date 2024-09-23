@@ -442,7 +442,13 @@ a#chat_leave:hover {
     border-radius: 10px;
     background-color: #f1f1f1;
 }
+.modal-body{
+background-color: #b0b0b0;
+text-decoration: solid;
+font-size: larger;
+font-weight: bold;
 
+/* text-decoration-thickness: initial;
 .message.sent {
     align-self: flex-end;
     background-color: #d4edda; /* Greenish background for sent messages */
@@ -457,3 +463,15 @@ a#chat_leave:hover {
 .message-content {
     white-space: pre-wrap; /* Preserve whitespace and newlines */
 }
+
+.modal-body{
+    background-color: #b0b0b0;
+    text-decoration: solid;
+    font-size: larger;
+    font-weight: bold;
+    
+    /* text-decoration-thickness: initial;
+    .message.sent {
+        align-self: flex-end;
+        background-color: #d4edda; /* Greenish background for sent messages */
+    }
