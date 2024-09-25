@@ -85,7 +85,7 @@ def ai_chatting(request,username):
         
         message = data.get('message', '')
    
-        genai.configure(api_key='' )
+        genai.configure(api_key='AIzaSyCi6tAFXI8ejADPIUeUrN52zuDboXloVeY' )
         model = genai.GenerativeModel("gemini-1.5-flash")
         response = model.generate_content(message)
        

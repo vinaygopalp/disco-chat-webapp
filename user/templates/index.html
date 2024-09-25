@@ -17,8 +17,8 @@
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"
@@ -27,7 +27,7 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     />
-
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
     {% comment %}
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
@@ -44,66 +44,64 @@
   </head>
   <body>
     <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-md navbar-light bg-light">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="#"
-          ><img
-            src="{% static 'img/logo.png' %}"
-            style="border-radius: 50%; height: 50px"
-          />
-          DISCOAPP</a
-        >
+    <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">
+      <img
+        src="{% static 'img/logo.png' %}"
+        style="border-radius: 50%; height: 50px"
+      />
+      DISCOAPP
+    </a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ol class="navbar-nav me-auto mb-2 mb-md-0">
+        <li class="nav-item">
+          <a class="nav-link" href="#about">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#team">Team</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#footer">Contact</a>
+        </li>
+      </ol>
+      <div class="auth-links">
+        {%if user.is_authenticated%}
+        <h5>Welcome {{user.username}}</h5>
+        <a href="logout" class="btn get-started">Logout</a>
+        {%else%}
         <button
-          class="navbar-toggler"
           type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
+          class="btn get-started"
+          data-bs-toggle="modal"
+          data-bs-target="#loginModal"
         >
-          <span class="navbar-toggler-icon"></span>
+          Login
         </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ol class="navbar-nav me-auto mb-2 mb-md-0">
-            <li class="nav-item">
-              <a class="nav-link" href="#about">About</a>
-            </li>
-
-            <li class="nav-item">
-              <a class="nav-link" href="#team">Team</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#footer">Contact</a>
-            </li>
-          </ol>
-          <div class="auth-links">
-            {%if user.is_authenticated%}
-            <h5>Welcome {{user.username}}</h5>
-            <a href="logout" class="btn get-started">Logout</a>
-            {%else%}
-            <button
-              type="button"
-              class="btn get-started"
-              data-bs-toggle="modal"
-              data-bs-target="#loginModal"
-            >
-              Login
-            </button>
-            <button
-              type="button"
-              class="btn get-started"
-              data-bs-toggle="modal"
-              data-bs-target="#signupModal"
-            >
-              Sign up
-            </button>
-
-            {%endif%}
-          </div>
-        </div>
+        <button
+          type="button"
+          class="btn get-started"
+          data-bs-toggle="modal"
+          data-bs-target="#signupModal"
+        >
+          Sign up
+        </button>
+        {%endif%}
       </div>
-    </nav>
+    </div>
+  </div>
+</nav>
 
     {%for message in messages%} {%if message.tags == "success"%}
     <div class="alert alert-success" role="alert">
@@ -117,7 +115,7 @@
     {%endif%} {% endfor %}
 
     <!-- Hero Section -->
-    <section class="hero container-fluid">
+    <section class="hero container-fluid" style="padding-bottom:148px;">
       <div class="row align-items-center">
         <div class="col-md-6 hero-text">
           <h1>
@@ -331,201 +329,281 @@
           </div>
         </div>
       </div>
+    </div>&nbsp; &nbsp; 
+    <div class="w3-container" " id="about">
+      <h1 id="key">
+        <img src="{% static 'img/logo.png' %}" style="border-radius: 50%; height: 40px" alt="DISCO Logo" />
+         DISCO
+      </h1>
+       <h3 id="key">Key Features of DISCO</h3>
+      <div class="container features-container">
+        <div class="row">
+          <!-- First Column -->
+          <div class="col-lg-6 col-md-12">
+            <div class="feature-item" >
+              <i class="bi bi-chat-dots"></i>
+              <h4>Real-time Messaging</h4>
+              <p style=" font-size: 18px;">Experience lightning-fast, responsive messaging with instant delivery, bringing your conversations to life.</p>
+            </div>
+            <div class="feature-item">
+              <i class="bi bi-shield-check"></i>
+              <h4>Private & Secure</h4>
+              <p style=" font-size: 18px;">Your privacy is our priority. End-to-end encryption ensures your messages remain confidential and secure.</p>
+            </div>
+            <div class="feature-item">
+              <i class="bi bi-palette"></i>
+              <h4>Personalized Themes</h4>
+              <p style=" font-size: 18px;">Tailor your chat experience with vibrant themes and colors that reflect your unique style.</p>
+            </div>
+            <div class="feature-item">
+              <i class="bi bi-lightning"></i>
+              <h4>Lightweight & Fast</h4>
+              <p style=" font-size: 18px;">Optimized for speed and efficiency, ensuring smooth performance even on low bandwidth connections.</p>
+            </div>
+          </div>
+          
+          <!-- Second Column -->
+          <div class="col-lg-6 col-md-12">
+            <div class="feature-item">
+              <i class="bi bi-people"></i>
+              <h4>Custom Chat Rooms</h4>
+              <p style=" font-size: 18px;">Create and join tailored chat rooms for private conversations or open group discussions.</p>
+            </div>
+            <div class="feature-item">
+              <i class="bi bi-robot"></i>
+              <h4>AI-Powered Conversations</h4>
+              <p style=" font-size: 18px;"> Enhance your chats with intelligent suggestions and assistance from our built-in AI.</p>
+            </div>
+            <div class="feature-item">
+              <i class="bi bi-clock-history"></i>
+              <h4>Chat History</h4>
+              <p style=" font-size: 18px;">Never lose track of important messages with our comprehensive chat history feature.</p>
+            </div>
+            <div class="feature-item">
+              <i class="bi bi-laptop"></i>
+              <h4>Cross-Platform Sync</h4>
+              <p style=" font-size: 18px;">Seamlessly sync your messages across all your devices - phone, tablet, or desktop.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <style>
+        /* General styling */
+        .features-container {
+          padding: 50px 0;
+     
+        }
+    
+        .feature-item {
+          margin-bottom: 30px;
+          padding: 25px;
+          border-radius: 10px;
+          background-color: #ffffff;
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+    
+        .feature-item:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15);
+        }
+    
+        .feature-item i {
+          font-size: 2.8rem;
+          color: #3586ff;
+          margin-bottom: 10px;
+        }
+    
+        .feature-item h4 {
+          font-size: 1.5rem;
+          font-family: 'Poppins', sans-serif;
+          color: #333;
+          margin-bottom: 15px;
+        }
+    
+        .feature-item p {
+          font-size: 1rem;
+          font-family: 'Roboto', sans-serif;
+          color: #555;
+          line-height: 1.6;
+        }
+    
+        /* Typography settings */
+        h3 {
+          font-family: 'Poppins', sans-serif;
+          font-weight: 600;
+          color: #fff;
+        }
+    
+        p.w3-large {
+          font-size: 1.2rem;
+          font-family: 'Roboto', sans-serif;
+          color: #fff;
+        }
+    
+        /* Responsive Design */
+        @media (max-width: 768px) {
+          .features-container {
+            padding: 30px 15px;
+          }
+    
+          .feature-item {
+            padding: 20px;
+          }
+    
+          .feature-item h4 {
+            font-size: 1.3rem;
+          }
+    
+          .feature-item p {
+            font-size: 0.95rem;
+          }
+        }
+      </style>
     </div>
-    <div class="w3-container" style="padding: 45px 16px" id="about">
-      <h3 class="w3-center">
-        <img
-          src="{% static 'img/logo.png' %}"
-          style="border-radius: 50%; height: 50px"
-        />
-        &nbsp; DISCO
-      </h3>
-      <p class="w3-center w3-large">Key features of DISCO</p>
-      <div class="container">
-        <ul>
-          <li>
-            <strong>Real-time Messaging</strong> <br />
-            Enjoy fast, responsive messaging with instant delivery, making your
-            conversations feel alive and in the moment.
-          </li>
-          <li>
-            <strong>Custom Chat Rooms</strong> <br />
-            Create and join chat rooms tailored to your interests. Whether it's
-            private chats or open group discussions, DISCO Chat has you covered.
-          </li>
-          <li>
-            <strong>Private & Secure</strong> <br />
-            Your privacy matters. With end-to-end encryption, DISCO ensures that
-            your messages remain private and secure at all times.
-          </li>
-          <li>
-            <strong>AI-Powered Conversations</strong> <br />
-            Get intelligent suggestions and assistance with our built-in AI,
-            making conversations smoother and more intuitive.
-          </li>
-          <li>
-            <strong>Personalized Themes</strong> <br />
-            Customize your chat experience with vibrant themes and colors that
-            reflect your personal style.
-          </li>
-          <li>
-            <strong>Chat History</strong> <br />
-            Never lose track of an important message.
-          </li>
-          <li>
-            <strong>Cross-Platform Sync</strong> <br />
-            DISCO Chat works across multiple devices—whether you're on your
-            phone, tablet, or desktop, all your messages stay in sync.
-          </li>
-
-          <li>
-            <strong>Lightweight & Fast</strong> <br />
-            Built with cutting-edge technology, DISCO Chat is optimized for
-            speed and efficiency, ensuring a smooth experience even on low
-            bandwidth.
-          </li>
-        </ul>
-      </div>
-      <br /><br /><br />
-      <!-- About Section -->
-      <div class="w3-container" style="padding: 45px 16px" id="about2">
-        <h3 class="w3-center">ABOUT THE COMPANY</h3>
-        <p class="w3-center w3-large">Key features of our company</p>
-        <div class="w3-row-padding w3-center" style="margin-top: 64px">
-          <div class="w3-quarter">
-            <i class="fa fa-desktop w3-margin-bottom w3-jumbo w3-center"></i>
-            <p class="w3-large">Responsive</p>
-            <p>
-              Responsive design is our commitment to flawless adaptability.
-              Every screen size becomes a canvas for seamless user experiences.
-            </p>
-          </div>
-          <div class="w3-quarter">
-            <i class="fa fa-heart w3-margin-bottom w3-jumbo"></i>
-            <p class="w3-large">Passion</p>
-            <p>
-              it's our way of storytelling through images. Every shot we take
-              reflects our deep passion for freezing moments in time, creating
-              memories that last forever.
-            </p>
-          </div>
-          <div class="w3-quarter">
-            <i class="fa fa-diamond w3-margin-bottom w3-jumbo"></i>
-            <p class="w3-large">Design</p>
-            <p>
-              Our designs blend creativity and functionality, crafting
-              experiences that resonate.Every detail we create is a brushstroke
-              of innovation, shaping spaces and visuals with purpose.
-            </p>
-          </div>
-          <div class="w3-quarter">
-            <i class="fa fa-cog w3-margin-bottom w3-jumbo"></i>
-            <p class="w3-large">Support</p>
-            <p>
-              Our dedicated support team stands by, ready to assist with a
-              friendly smile. From technical queries to guidance, we're here to
-              ensure your journey is smooth.
-            </p>
-          </div>
-        </div>
-      </div>
+    
       <!-- Team Section -->
-      <div
-        class="w3-container"
-        style="padding: 45px 16px"
-        id="team"
-        style="background-color: black; color: #ececec"
-      >
-        <h3 class="w3-center">THE TEAM</h3>
-        <p class="w3-center w3-large">The ones created this webpage</p>
-        <div
-          class="w3-row-padding w3-grayscale"
-          style="margin-top: 64px; margin-right: 50px; margin-left: 20px"
-        >
-          <div
-            class="w3-col l3 m6 w3-margin-bottom"
-            style="margin-right: 100px; margin-left: 20px"
-          >
-            <div class="w3-card">
-              <div class="w3-container">
-                <h3>Vinaygopal</h3>
-                <p class="w3-opacity">FRONTEND | BACKEND</p>
-                <p style="text-align: justify; text-justify: inter-word">
-                  Meet Vinay, the driving force behind both the backend and
-                  frontend brilliance of this webpage. With a blend of technical
-                  prowess and design finesse, he's brought a holistic vision to
-                  life. From architecting robust backend structures to curating
-                  seamless frontend experiences, Vinay's dedication shines
-                  through in every aspect. Step into a digital world where his
-                  technical expertise and creative flair converge, offering a
-                  webpage that's as functional as it is visually captivating.
-                  Welcome to a digital realm sculpted by Vinay's skills and
-                  passion.
-                </p>
-                <p>
-                  <a
-                    class="w3-button w3-light-grey w3-block"
-                    href="https://www.linkedin.com/in/vinay-gopal-p/"
-                    ><i class="fa fa-envelope"></i> Contact</a
-                  >
-                </p>
+     
+            <!-- Team Section -->
+<section id="team" class="py-5 bg-light" style="background-color:red !important;">
+  <div class="container">
+    <h2 class="text-center mb-5" style="color: black; font-weight: bold;">Our Team</h2>
+    <div class="row">
+      <!-- Vinaygopal -->
+      <div class="col-lg-4 col-md-6 mb-4">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <div class="d-flex align-items-center mb-3">
+              <img src="{% static 'img/chaka.jpg' %}" alt="Vinaygopal" class="rounded-circle mr-3" style="width: 72px; height: 74px; object-fit: cover;">
+              <div class="ml-3">
+                <h3 class="card-title mb-1">Vinaygopal</h3>
+                <p class="card-subtitle text-muted">Backend Developer</p>
               </div>
             </div>
+            <p class="card-text mt-3" style="
+    font-size: 17px;
+    text-align: justify;
+">
+              Meet Vinay, the driving force behind both the backend and frontend brilliance of this webpage. With a blend of technical prowess and design finesse, he's brought a holistic vision to life, creating a webpage that's as functional as it is visually captivating.
+            </p>
           </div>
-          <div class="w3-col l3 m6 w3-margin-bottom" style="margin-right: 50px">
-            <div class="w3-card">
-              <div class="w3-container">
-                <h3>Yajnesh</h3>
-                <p class="w3-opacity">Web Designer</p>
-                <p style="text-align: justify; text-justify: inter-word">
-                  the creative force behind the frontend magic of this webpage.
-                  With an eye for aesthetics and a flair for design, he's
-                  brought visual brilliance to every pixel. From crafting
-                  intuitive user interfaces to adding that perfect touch of
-                  elegance, Yajnesh's dedication shines through in every
-                  element. Step into a world where hes creativity meets
-                  technology, and experience a webpage that's as captivating as
-                  it is user-friendly. Welcome to a digital realm shaped by
-                  yajnesh's expertise and passion..
-                </p>
-                <p>
-                  <a
-                    href="https://www.linkedin.com/in/yajnesh-at/"
-                    class="w3-button w3-light-grey w3-block"
-                    ><i class="fa fa-envelope"></i> Contact</a
-                  >
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="w3-col l3 m6 w3-margin-bottom" style="margin-right: 50px">
-            <div class="w3-card">
-              <div class="w3-container">
-                <h3>Suhani</h3>
-                <p class="w3-opacity">FRONTEND</p>
-                <p style="text-align: justify; text-justify: inter-word">
-                  Introducing Suhani, the brilliant mind behind the captivating
-                  frontend of this webpage. Her knack for design and meticulous
-                  attention to detail have breathed life into every corner. From
-                  conceptualizing user-friendly interfaces to infusing a touch
-                  of elegance, Suhani's dedication is evident in every aspect.
-                  Step into a realm where her creativity merges seamlessly with
-                  technology, offering a webpage that's both stunning and
-                  intuitive. Welcome to a digital space crafted by Suhani's
-                  expertise and passion.
-                </p>
-                <p>
-                  <a
-                    href="https://www.linkedin.com/in/suhani-pargal-a06058280/"
-                    class="w3-button w3-light-grey w3-block"
-                    ><i class="fa fa-envelope"></i> Contact</a
-                  >
-                </p>
-              </div>
-            </div>
+          <div class="card-footer bg-transparent border-0 d-flex justify-content-between align-items-end">
+            <a href="https://www.linkedin.com/in/vinay-gopal-p/" class="btn btn-primary" style="background-color: #ff6600; border-color: #ff6600;">
+              <i class="fa fa-linkedin"></i> Connect
+            </a>
+            <a href="https://github.com/vinaygopalp/" class="btn btn-primary" style="background-color: #ff6600; border-color: #ff6600;">
+              <i class="fa fa-github"></i> Connect
+            </a>
           </div>
         </div>
       </div>
+
+      <!-- Yajnesh -->
+      <div class="col-lg-4 col-md-6 mb-4">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <div class="d-flex align-items-center mb-3">
+              <img src="{% static 'img/yajnu1.jpg' %}" alt="Yajnesh" class="rounded-circle mr-3" style="width: 72px; height: 74px; object-fit: cover;">
+              <div class="ml-3">
+                <h3 class="card-title mb-1">Yajnesh</h3>
+                <p class="card-subtitle text-muted">Frontend Developer</p>
+              </div>
+            </div>
+            <p class="card-text mt-3" style=" 
+    font-size: 17px;
+    text-align: justify;
+">
+              Yajnesh is the creative force behind the frontend magic of this webpage. With an eye for aesthetics and a flair for design, he's brought visual brilliance to every pixel, creating a user-friendly and captivating digital experience.
+            </p>
+          </div>
+          <div class="card-footer bg-transparent border-0 d-flex justify-content-between align-items-end">
+            <a href="https://www.linkedin.com/in/yajnesh-at/" class="btn btn-primary" style="background-color: #ff6600; border-color: #ff6600;">
+              <i class="fa fa-linkedin"></i> Connect
+            </a>
+            <a href="https://github.com/yajnesh06/" class="btn btn-primary" style="background-color: #ff6600; border-color: #ff6600;">
+              <i class="fa fa-github"></i> Connect
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Suhani -->
+      <div class="col-lg-4 col-md-6 mb-4">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <div class="d-flex align-items-center mb-3">
+              <img src="{% static 'img/susu.jpg' %}" alt="Suhani" class="rounded-circle mr-3" style="width: 72px; height: 74px; object-fit: cover;">
+              <div class="ml-3">
+                <h3 class="card-title mb-1">Suhani</h3>
+                <p class="card-subtitle text-muted">Frontend Developer</p>
+              </div>
+            </div>
+            <p class="card-text mt-3" style=" 
+    font-size: 17px;
+    text-align: justify;
+">
+              Introducing Suhani, the brilliant mind behind the captivating frontend of this webpage. Her knack for design and meticulous attention to detail have breathed life into every corner, creating a stunning and intuitive digital space.
+            </p>
+          </div>
+          <div class="card-footer bg-transparent border-0 d-flex justify-content-between align-items-end">
+            <a href="https://www.linkedin.com/in/suhani-pargal-a06058280/" class="btn btn-primary" style="background-color: #ff6600; border-color: #ff6600;">
+              <i class="fa fa-linkedin"></i> Connect
+            </a>
+            <a href="https://github.com/Suhanipargal/" class="btn btn-primary" style="background-color: #ff6600; border-color: #ff6600;">
+              <i class="fa fa-github"></i> Connect
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .card-body .rounded-circle {
+    border: none;
+    margin-right: 15px;  /* Increased right margin of the image */
+  }
+  .card-title {
+    font-size: 1.25rem;
+    margin-bottom: 0.25rem;  /* Slight space between title and subtitle */
+  }
+  .card-subtitle {
+    font-size: 0.875rem;
+    margin-bottom: 0;
+  }
+  .card-body {
+    padding: 1.5rem;  /* Increased padding inside the card body */
+  }
+</style>
+          </div>
+        </div>
+      </section>
+
+      <style>
+        #team .card {
+          transition: transform 0.3s ease-in-out;
+        }
+        #team .card:hover {
+          transform: translateY(-5px);
+        }
+        #team .card-body {
+          padding: 1.5rem;
+        }
+        #team .card-text {
+          font-size: 0.9rem;
+          text-align: justify;
+        }
+        #team .btn-primary {
+          background-color: #0077B5;
+          border-color: #0077B5;
+        }
+        #team .btn-primary:hover {
+          background-color: #005983;
+          border-color: #005983;
+        }
+      </style>
 
       <!-- Promo Section "Statistics" -->
       <div class="w3-container w3-row w3-center w3-dark-grey w3-padding-64">
@@ -535,7 +613,7 @@
         </div>
         <div class="w3-quarter">
           <span class="w3-xxlarge">55+</span>
-          <br />
+          <br />Users
         </div>
         <div class="w3-quarter">
           <span class="w3-xxlarge">89+</span>
@@ -547,7 +625,7 @@
         </div>
       </div>
 
-      <br /><br />
+
       <footer class="footer" id="footer">
         <div class="waves">
           <div class="wave" id="wave1"></div>
@@ -567,18 +645,12 @@
             </a>
           </li>
           <li class="social-icon__item">
-            <a
-              class="social-icon__link"
-              href="https://www.linkedin.com/in/vinay-gopal-p/"
-            >
+            <a class="social-icon__link" href="https://www.linkedin.com/in/vinay-gopal-p/">
               <ion-icon name="logo-linkedin"></ion-icon>
             </a>
           </li>
           <li class="social-icon__item">
-            <a
-              class="social-icon__link"
-              href="https://www.instagram.com/vinaygopal24"
-            >
+            <a class="social-icon__link" href="https://www.instagram.com/vinaygopal24">
               <ion-icon name="logo-instagram"></ion-icon>
             </a>
           </li>
@@ -586,192 +658,17 @@
         <ol class="menu">
           <li class="menu__item"><a class="menu__link" href="#">Home</a></li>
           <li class="menu__item"><a class="menu__link" href="#">About</a></li>
-          <li class="menu__item">
-            <a class="menu__link" href="#">Services</a>
-          </li>
+          <li class="menu__item"><a class="menu__link" href="#">Services</a></li>
           <li class="menu__item"><a class="menu__link" href="#">Team</a></li>
           <li class="menu__item"><a class="menu__link" href="#">Contact</a></li>
         </ol>
         <p>
-          &copy; &nbsp;<img
-            src="{% static 'img/logo.png' %}"
-            style="border-radius: 50%; height: 20px"
-          />
+          &copy; &nbsp;<img src="{% static 'img/logo.png' %}" style="border-radius: 50%; height: 20px" />
           Disco | All Rights Reserved
         </p>
       </footer>
-      <script
-        type="module"
-        src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
-      ></script>
-      <script
-        nomodule
-        src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
-      ></script>
-
-      <style>
-        .btn-primary {
-          background-color: #f67e02;
-        }
-        .modal-body {
-          font-family: Arial, Helvetica, sans-serif;
-          font-style: oblique;
-          text-decoration: solid;
-          font-size: larger;
-          font-weight: bold;
-          border-radius: 10px;
-          /* text-decoration-thickness: initial;
-        .message.sent {
-            align-self: flex-end;
-            background-color: #d4edda; /* Greenish background for sent messages */
-        }
-        img {
-          border-radius: 20px;
-          box-shadow: 0px 4px 8px rgb(106, 8, 8);
-        }
-        .w3-container {
-          background-color: #282c35;
-          color: #ececec;
-        }
-        #team {
-          width: 100%;
-        }
-        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap");
-
-        .footer {
-          position: relative;
-          width: 100%;
-          background: #3586ff;
-          min-height: 100px;
-          padding: 20px 50px;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          flex-direction: column;
-        }
-
-        .social-icon,
-        .menu {
-          position: relative;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          margin: 10px 0;
-          flex-wrap: wrap;
-        }
-
-        .social-icon__item,
-        .menu__item {
-          list-style: none;
-        }
-
-        .social-icon__link {
-          font-size: 2rem;
-          color: #fff;
-          margin: 0 10px;
-          display: inline-block;
-          transition: 0.5s;
-        }
-        .social-icon__link:hover {
-          transform: translateY(-10px);
-        }
-
-        .menu__link {
-          font-size: 1.2rem;
-          color: #fff;
-          margin: 0 10px;
-          display: inline-block;
-          transition: 0.5s;
-          text-decoration: none;
-          opacity: 0.75;
-          font-weight: 300;
-        }
-
-        .menu__link:hover {
-          opacity: 1;
-        }
-
-        .footer p {
-          color: #fff;
-          margin: 15px 0 10px 0;
-          font-size: 1rem;
-          font-weight: 300;
-        }
-
-        .wave {
-          position: absolute;
-          top: -100px;
-          left: 0;
-          width: 100%;
-          height: 100px;
-          background: url("https://i.ibb.co/wQZVxxk/wave.png");
-          background-size: 1000px 100px;
-        }
-
-        .wave#wave1 {
-          z-index: 1000;
-          opacity: 1;
-          bottom: 0;
-          animation: animateWaves 4s linear infinite;
-        }
-
-        .wave#wave2 {
-          z-index: 999;
-          opacity: 0.5;
-          bottom: 10px;
-          animation: animate 4s linear infinite !important;
-        }
-
-        .wave#wave3 {
-          z-index: 1000;
-          opacity: 0.2;
-          bottom: 15px;
-          animation: animateWaves 3s linear infinite;
-        }
-
-        .wave#wave4 {
-          z-index: 999;
-          opacity: 0.7;
-          bottom: 20px;
-          animation: animate 3s linear infinite;
-        }
-
-        @keyframes animateWaves {
-          0% {
-            background-position-x: 1000px;
-          }
-          100% {
-            background-positon-x: 0px;
-          }
-        }
-
-        @keyframes animate {
-          0% {
-            background-position-x: -1000px;
-          }
-          100% {
-            background-positon-x: 0px;
-          }
-        }
-        ul {
-          list-style-type: none;
-          padding: 0;
-        }
-        ul li {
-          margin: 10px 0;
-          padding: 15px;
-          border-radius: 5px;
-          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-        ul li::before {
-          content: "\2022"; /* Bullet point */
-          color: #007bff; /* Custom color for bullet */
-          font-weight: bold;
-          display: inline-block;
-          width: 1em;
-          margin-left: -1em;
-        }
-      </style>
+        
+    
       <!-- JavaScript for Bootstrap -->
       <script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
@@ -780,7 +677,7 @@
       ></script>
 
       <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-      <script src="{% static 'js/scripts.js' %}"></script>
+      <script src="{% static 'js/scripts.js' %}"></>
       {% comment %}
       <script>
         $(document).ready(function () {
@@ -808,6 +705,64 @@
           });
         });
       </script>
+          <!-- ... existing code ... -->
+    <script>
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Animate feature items
+      gsap.utils.toArray('.feature-item').forEach((item, index) => {
+        gsap.from(item, {
+          opacity: 0,
+          y: 50,
+          duration: 1,
+          scrollTrigger: {
+            trigger: item,
+            start: 'top 80%',
+            end: 'bottom 20%',
+            toggleActions: 'play none none reverse'
+          }
+        });
+      });
+
+      // Animate team cards
+      gsap.utils.toArray('#team .card').forEach((card, index) => {
+        gsap.from(card, {
+          opacity: 0,
+          y: 50,
+          duration: 1,
+          scrollTrigger: {
+            trigger: card,
+            start: 'top 80%',
+            end: 'bottom 20%',
+            toggleActions: 'play none none reverse'
+          }
+        });
+      });
+
+      // Animate statistics
+      gsap.utils.toArray('.w3-quarter').forEach((stat, index) => {
+        gsap.from(stat, {
+          opacity: 0,
+          y: 50,
+          duration: 1,
+          scrollTrigger: {
+            trigger: stat,
+            start: 'top 80%',
+            end: 'bottom 20%',
+            toggleActions: 'play none none reverse'
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
+          <!-- ... existing code ... -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{% static 'js/scripts.js' %}"></script>
+  </body>
+</html>
       {% endcomment %}
     </div>
   </body>
