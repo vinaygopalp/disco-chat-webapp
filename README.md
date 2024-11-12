@@ -28,7 +28,6 @@ Disco Chat is a real-time web application built using Django and Channels, which
 - Python 3.8+
 - Django 4.2+
 
-
 ### Installation Steps
 1. **Clone the Repository**
 
